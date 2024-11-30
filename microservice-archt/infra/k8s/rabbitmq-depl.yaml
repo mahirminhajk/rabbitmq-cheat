@@ -16,7 +16,7 @@ spec:
         image: rabbitmq:3-management
         resources:
           limits:
-            memory: "128Mi"
+            memory: "256Mi"
             cpu: "500m"
 ---
 apiVersion: v1

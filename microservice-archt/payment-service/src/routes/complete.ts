@@ -1,5 +1,6 @@
 import { Router } from "express";
 import { randomUUID } from "node:crypto";
+import { paymentCompletePublisher } from "../event/setup";
 
 const router = Router();
 
@@ -14,6 +15,7 @@ router.get('/payment/complete', async (req, res) => {
     }
 
     //* publish event
+    await paymentCompletePublisher.publish(data);
 
     res.send({
         message: `payment ${id} of ${price} completed`

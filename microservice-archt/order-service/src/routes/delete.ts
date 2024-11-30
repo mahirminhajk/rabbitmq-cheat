@@ -1,4 +1,5 @@
 import { Router } from "express";
+import { orderDeletePublisher } from "../event/setup";
 
 const router = Router();
 
@@ -11,6 +12,9 @@ router.get('/order/delete', async (req, res) => {
     }
 
     //* publish event
+    orderDeletePublisher.publish({
+        id: data.id.toString()
+    })
 
     res.send({
         message: `${id} order delete`

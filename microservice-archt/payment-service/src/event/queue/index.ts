@@ -1,0 +1,1 @@
+export const queueName = 'payment_queue';

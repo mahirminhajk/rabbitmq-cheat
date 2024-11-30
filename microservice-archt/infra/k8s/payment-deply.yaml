@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: payment-depl
+spec:
+  selector:
+    matchLabels:
+      app: payment-depl
+  template:
+    metadata:
+      labels:
+        app: payment-depl
+    spec:
+      containers:
+      - name: payment-depl
+        image: mahirminhajk/r.payment
+        resources:
+          limits:
+            memory: "256Mi"
+            cpu: "500m"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: payment-srv
+spec:
+  selector:
+    app: payment-depl
+  ports:
+    - name: payment
+      protocol: TCP
+      port: 3000
+      targetPort: 3000

@@ -1,0 +1,25 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-service
+  annotations:
+    nginx.ingress.kubernetes.io/use-regex: "true"
+spec:
+  ingressClassName: nginx
+  rules:
+    - http:
+        paths:
+          - path: /order
+            pathType: Prefix
+            backend:
+              service:
+                name: order-srv
+                port:
+                  number: 3000
+          - path: /payment
+            pathType: Prefix
+            backend:
+              service:
+                name: payment-srv
+                port:
+                  number: 3000

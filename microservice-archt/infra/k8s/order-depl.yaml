@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: order-depl
+spec:
+  selector:
+    matchLabels:
+      app: order-depl
+  template:
+    metadata:
+      labels:
+        app: order-depl
+    spec:
+      containers:
+      - name: order-depl
+        image: mahirminhajk/r.order
+        resources:
+          limits:
+            memory: "256Mi"
+            cpu: "500m"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: order-srv
+spec:
+  selector:
+    app: order-depl
+  ports:
+    - name: order
+      protocol: TCP
+      port: 3000
+      targetPort: 3000

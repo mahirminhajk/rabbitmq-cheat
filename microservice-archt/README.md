@@ -11,3 +11,29 @@ In real world scenario, it will be a `npm package` or a git `submodule`.
 ```bash
 skaffold dev
 ```
+
+## Services
+- order-srv
+    - publish order created event
+    - publish order deleted event
+    - listen to payment complete event
+    - listen to payment refund event
+- payment-srv
+    - publish payment complete event
+    - publish payment refund event
+    - listen to order created event
+    - listen to order deleted event
+
+## Routes
+- http://192.168.49.2/ - Ingess Nginx.
+
+`to find this url`
+```bash
+minikube ip
+```
+
+- http://192.168.49.2/order/create
+- http://192.168.49.2/order/delete
+
+- http://192.168.49.2/payment/complete
+- http://192.168.49.2/payment/refund

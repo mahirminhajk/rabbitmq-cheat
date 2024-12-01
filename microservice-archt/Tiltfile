@@ -1,0 +1,37 @@
+# Define the paths for Kubernetes manifests
+k8s_yaml([
+    'infra/k8s/order-depl.yaml',        # Order service deployment and service
+    'infra/k8s/payment-deply.yaml',     # Payment service deployment and service
+    'infra/k8s/rabbitmq-depl.yaml',     # RabbitMQ deployment and service
+    'infra/k8s/ingress-srv.yaml'        # Ingress service
+])
+
+# Define Docker builds for each service
+docker_build(
+    'mahirminhajk/r.order',
+    context='./order-service',
+    dockerfile='./order-service/Dockerfile',
+    ignore=['node_modules'],
+    live_update=[
+        sync('./order-service/src', '/app/src'),
+        run('pnpm install', trigger=['order-service/package.json']),
+    ],
+    target='dev'
+)
+docker_build(
+    'mahirminhajk/r.payment',
+    context='./payment-service',
+    dockerfile='./payment-service/Dockerfile',
+    ignore=['node_modules'],
+    live_update=[
+        sync('./payment-service/src', '/app/src'),
+        run('pnpm install', trigger=['payment-service/package.json']),
+    ],
+    target='dev'
+)
+
+# Port forwarding rabbitmq service
+k8s_resource(
+    workload='rabbitmq-depl',
+    port_forwards='15672:15672'
+)

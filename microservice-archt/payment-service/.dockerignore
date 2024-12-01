@@ -1,1 +1,7 @@
 node_modules
+dist
+coverage
+.env
+.env.example
+jest.config.js
+pnpm-lock.yaml

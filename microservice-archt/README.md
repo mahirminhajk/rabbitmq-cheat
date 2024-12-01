@@ -8,8 +8,10 @@ kubectl port-forward svc/rabbitmq-srv 15672:15672
 In real world scenario, it will be a `npm package` or a git `submodule`. 
 
 ## run the microservices
+[tilt install](https://docs.tilt.dev/)
 ```bash
-skaffold dev
+# skaffold dev - replaced by tilt
+tilt up
 ```
 
 ## Services

@@ -3,7 +3,9 @@ k8s_yaml([
     'infra/k8s/order-depl.yaml',        # Order service deployment and service
     'infra/k8s/payment-deply.yaml',     # Payment service deployment and service
     'infra/k8s/rabbitmq-depl.yaml',     # RabbitMQ deployment and service
-    'infra/k8s/ingress-srv.yaml'        # Ingress service
+    'infra/k8s/ingress-srv.yaml',       # Ingress service
+    'infra/k8s/elasticsearch-depl.yaml',# elastic search deployment and service
+    'infra/k8s/kibana-depl.yaml',       # kibana deployment and service
 ])
 
 # Define Docker builds for each service
@@ -34,4 +36,16 @@ docker_build(
 k8s_resource(
     workload='rabbitmq-depl',
     port_forwards='15672:15672'
+)
+
+# Port forwarding elastic search management
+k8s_resource(
+    workload='elasticsearch',
+    port_forwards=['9200:9200', '9300:9300']
+)
+
+# Port forwarding kibana management
+k8s_resource(
+    workload='kibana',
+    port_forwards='5601:5601'
 )

@@ -39,3 +39,10 @@ minikube ip
 
 - http://192.168.49.2/payment/complete
 - http://192.168.49.2/payment/refund
+
+
+## get elastic kibana access token
+```bash
+curl -X POST "localhost:9200/_security/service/elastic/kibana/credential/token/token1?pretty" \
+-u elastic:changeme \
+```

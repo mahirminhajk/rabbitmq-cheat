@@ -24,6 +24,10 @@ spec:
           value: "-Xms1g -Xmx1g"
         - name: xpack.security.http.ssl.enabled
           value: "false"
+        - name: xpack.security.enabled
+          value: "false"
+        - name: xpack.monitoring.collection.enabled
+          value: "true"
         ports:
         - containerPort: 9200
         volumeMounts:

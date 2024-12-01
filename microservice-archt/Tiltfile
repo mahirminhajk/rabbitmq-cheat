@@ -6,7 +6,11 @@ k8s_yaml([
     'infra/k8s/ingress-srv.yaml',       # Ingress service
     'infra/k8s/elasticsearch-depl.yaml',# elastic search deployment and service
     'infra/k8s/kibana-depl.yaml',       # kibana deployment and service
+    'infra/k8s/metricbeat-kubctl.yaml', # metricbeat ConfigMap
+    'infra/k8s/metricbeat-rbac.yaml',   # metricbeat ClusterRoleBinding
+    'infra/k8s/metricbeat-depl.yaml',   # metricbeat DaemonSet
 ])
+    
 
 # Define Docker builds for each service
 docker_build(
@@ -41,7 +45,7 @@ k8s_resource(
 # Port forwarding elastic search management
 k8s_resource(
     workload='elasticsearch',
-    port_forwards=['9200:9200', '9300:9300']
+    port_forwards=['9200:9200']
 )
 
 # Port forwarding kibana management

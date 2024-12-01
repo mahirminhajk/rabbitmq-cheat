@@ -14,6 +14,13 @@ spec:
       containers:
       - name: order-depl
         image: mahirminhajk/r.order
+        env:
+          - name: ELASTICSEARCH_URL
+            value: http://elasticsearch:9200
+          - name: ELASTICSEARCH_USERNAME
+            value: elastic
+          - name: ELASTICSEARCH_PASSWORD
+            value: changeme
         resources:
           limits:
             memory: "256Mi"

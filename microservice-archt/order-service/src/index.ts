@@ -13,6 +13,9 @@ const startServer = async () => {
     if (!process.env.ELASTICSEARCH_PASSWORD) {
         throw new Error('❌ ELASTICSEARCH_PASSWORD must be defined');
     }
+    if (!process.env.REDIS_URL) {
+        throw new Error('❌ REDIS_URL must be defined');
+    }
 
     //* rabbitmq setup
     await rabbitMQSetup();

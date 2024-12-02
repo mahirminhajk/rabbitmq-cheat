@@ -3,7 +3,7 @@ import { Client } from "@elastic/elasticsearch";
 class ElasticSearchService {
     private client: Client;
 
-    private isInitialized = false;
+    // private isInitialized = false;
 
     constructor() {
         this.client = new Client({ 
@@ -16,30 +16,30 @@ class ElasticSearchService {
         console.log('🔍 ElasticSearch client created');
     };
 
-    async init() {
-        if (await this.client.indices.exists({ index: 'orders' })) {
-            console.log('🔍 Orders index already exists');
-            this.isInitialized = true;
-            return;
-        }
-        await this.client.indices.create({
-            index: 'orders',
-            body: {
-                mappings: {
-                    properties: {
-                        id: { type: 'keyword' },
-                        name: { type: 'text' },
-                        price: { type: 'integer' }
-                    }
-                }
-            }
-        });
-        this.isInitialized = true;
-        console.log('🔍 Orders index created');
-    }
+    // async init() {
+    //     if (await this.client.indices.exists({ index: 'orders' })) {
+    //         console.log('🔍 Orders index already exists');
+    //         this.isInitialized = true;
+    //         return;
+    //     }
+    //     await this.client.indices.create({
+    //         index: 'orders',
+    //         body: {
+    //             mappings: {
+    //                 properties: {
+    //                     id: { type: 'keyword' },
+    //                     name: { type: 'text' },
+    //                     price: { type: 'integer' }
+    //                 }
+    //             }
+    //         }
+    //     });
+    //     this.isInitialized = true;
+    //     console.log('🔍 Orders index created');
+    // }
 
     async indexOrder(order: { id: string, name: string, price: number }) { 
-        if(!this.isInitialized) this.init();
+        // if(!this.isInitialized) this.init();
         await this.client.index({
             index: 'orders',
             id: order.id,
@@ -49,7 +49,7 @@ class ElasticSearchService {
     };
 
     async searchOrder(query: string) {
-        if (!this.isInitialized) this.init();
+        // if (!this.isInitialized) this.init();
         const result = await this.client.search({
             index: 'orders',
             body: {

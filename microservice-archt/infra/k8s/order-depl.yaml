@@ -21,9 +21,11 @@ spec:
             value: elastic
           - name: ELASTICSEARCH_PASSWORD
             value: changeme
+          - name: REDIS_URL
+            value: 'redis://redis-srv:6379'
         resources:
           limits:
-            memory: "256Mi"
+            memory: "1Gi"
             cpu: "500m"
 ---
 apiVersion: v1

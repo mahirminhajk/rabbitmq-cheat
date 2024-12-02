@@ -1,14 +1,12 @@
 # Define the paths for Kubernetes manifests
 k8s_yaml([
-    'infra/k8s/order-depl.yaml',        # Order service deployment and service
-    'infra/k8s/payment-deply.yaml',     # Payment service deployment and service
-    'infra/k8s/rabbitmq-depl.yaml',     # RabbitMQ deployment and service
-    'infra/k8s/ingress-srv.yaml',       # Ingress service
-    'infra/k8s/elasticsearch-depl.yaml',# elastic search deployment and service
-    'infra/k8s/kibana-depl.yaml',       # kibana deployment and service
-    'infra/k8s/metricbeat-kubctl.yaml', # metricbeat ConfigMap
-    'infra/k8s/metricbeat-rbac.yaml',   # metricbeat ClusterRoleBinding
-    'infra/k8s/metricbeat-depl.yaml',   # metricbeat DaemonSet
+    'infra/k8s/order-depl.yaml',           # Order service deployment and service
+    'infra/k8s/payment-deply.yaml',        # Payment service deployment and service
+    'infra/k8s/rabbitmq-depl.yaml',        # RabbitMQ deployment and service
+    'infra/k8s/ingress-srv.yaml',          # Ingress service
+    'infra/k8s/elasticsearch-depl.yaml',   # elastic search deployment and service
+    'infra/k8s/kibana-depl.yaml',          # kibana deployment and service
+    'infra/k8s/metricbeat-kubernetes.yaml',# metricbeat DaemonSet
 ])
     
 

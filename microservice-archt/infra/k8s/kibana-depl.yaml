@@ -19,9 +19,9 @@ spec:
         - name: ELASTICSEARCH_HOSTS
           value: "http://elasticsearch:9200"
         - name: ELASTICSEARCH_SERVICEACCOUNTTOKEN
-          value: "AAEAAWVsYXN0aWMva2liYW5hL3Rva2VuMTpGLXFTZ0xQRlRzR3NSdk43NUI0ZEdB"
-        - name: xpack.monitoring.ui.enabled
-          value: "true"
+          value: "AAEAAWVsYXN0aWMva2liYW5hL3Rva2VuX0s3QlpocE1CNkR5MGhtZW01TFRHOmNwRnZDeFFjUVNPWGpSdVVDTG8yclE"
+        - name: ELASTICSEARCH_PASSWORD
+          value: changeme
         resources:
           limits:
             memory: "2Gi"

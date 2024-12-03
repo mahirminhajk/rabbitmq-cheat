@@ -4,8 +4,13 @@ k8s_yaml([
     'infra/k8s/payment-deply.yaml',        # Payment service deployment and service
     'infra/k8s/rabbitmq-depl.yaml',        # RabbitMQ deployment and service
     'infra/k8s/ingress-srv.yaml',          # Ingress service
+    'infra/k8s/elasticsearch-depl.yaml',   # elastic search deployment and service
+    'infra/k8s/kibana-depl.yaml',          # kibana deployment and service
+    'infra/k8s/metricbeat-kubernetes.yaml',# metricbeat DaemonSet
     'infra/k8s/redis-depl.yaml',           # Redis deployment and service
     'infra/k8s/namespace.yaml',            # Namespace
+    'infra/k8s/prometheus.yaml',           # Prometheus configmap
+    'infra/k8s/prometheus-depl.yaml',      # Prometheus deployment and service
 ])
     
 
@@ -37,4 +42,16 @@ docker_build(
 k8s_resource(
     workload='rabbitmq-depl',
     port_forwards='15672:15672'
+)
+
+# Port forwarding elastic search management
+k8s_resource(
+    workload='elasticsearch',
+    port_forwards=['9200:9200']
+)
+
+# Port forwarding kibana management
+k8s_resource(
+    workload='kibana',
+    port_forwards='5601:5601'
 )

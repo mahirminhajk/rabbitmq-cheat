@@ -46,3 +46,55 @@ minikube ip
 curl -X POST "localhost:9200/_security/service/elastic/kibana/credential/token/token1?pretty" \
 -u elastic:changeme \
 ```
+
+## HELM
+
+add repo
+```bash
+helm repo add grafana https://grafana.github.io/helm-charts
+```
+update repo
+```bash
+helm repo update
+```
+
+search repo
+```bash
+helm search repo loki
+```
+
+get values to customize
+```bash
+helm show values grafana/loki-stack > loki-custom-values.yaml
+```
+
+install with custom values
+```bash
+helm upgrade --install --values loki-custom-values.yaml loki grafana/loki-stack -n grafana-loki --create-namespace
+```
+
+uninstall
+```bash
+helm uninstall loki -n grafana-loki
+```
+
+get rendered template
+```bash
+helm template loki grafana/loki-stack -n my-grafana --values loki-depl.yaml > loki-rendered.yaml
+```
+## LOKI-GRAFANA
+
+get port number
+```bash
+kubectl get svc loki-grafana -n my-grafana  -o jsonpath="{.spec.ports[0].nodePort}"
+```
+
+get username
+```bash
+kubectl get secret loki-grafana -n my-grafana -o jsonpath="{.data.admin-user}" | base64 --decode
+```
+
+get password
+```bash
+kubectl get secret loki-grafana -n my-grafana -o jsonpath="{.data.admin-password}" | base64 --decode
+```

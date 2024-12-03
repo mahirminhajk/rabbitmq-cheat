@@ -1,11 +1,12 @@
 # Define the paths for Kubernetes manifests
 k8s_yaml([
-    'infra/k8s/order-depl.yaml',           # Order service deployment and service
-    'infra/k8s/payment-deply.yaml',        # Payment service deployment and service
-    'infra/k8s/rabbitmq-depl.yaml',        # RabbitMQ deployment and service
-    'infra/k8s/ingress-srv.yaml',          # Ingress service
-    'infra/k8s/redis-depl.yaml',           # Redis deployment and service
-    'infra/k8s/namespace.yaml',            # Namespace
+    'infra/k8s/order-depl.yaml',   # Order service deployment and service
+    'infra/k8s/payment-deply.yaml',# Payment service deployment and service
+    'infra/k8s/rabbitmq-depl.yaml',# RabbitMQ deployment and service
+    'infra/k8s/ingress-srv.yaml',  # Ingress service
+    'infra/k8s/redis-depl.yaml',   # Redis deployment and service
+    'infra/k8s/namespace.yaml',    # Namespace
+    'infra/k8s/grafana.yaml'       # Grafana deployment and service
 ])
     
 
@@ -37,4 +38,10 @@ docker_build(
 k8s_resource(
     workload='rabbitmq-depl',
     port_forwards='15672:15672'
+)
+
+# Port forwarding grafana service
+k8s_resource(
+    workload='grafana',
+    port_forwards='4000:3000'
 )

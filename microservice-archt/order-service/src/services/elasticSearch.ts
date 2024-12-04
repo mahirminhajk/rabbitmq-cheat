@@ -66,4 +66,4 @@ class ElasticSearchService {
 
 };
 
-export const elasticSearchService = new ElasticSearchService();
+// export const elasticSearchService = new ElasticSearchService();

@@ -125,7 +125,7 @@ metadata:
 type: Opaque
 data:
   admin-user: "YWRtaW4="
-  admin-password: "TVpvaklKdkxyQWdXUXRjVGZWMWdTVWxzeFBZalVHdHBBSVB4NlRyYw=="
+  admin-password: "Wkl1ejJQM0xyOTNMYUpqS3hra21BUHpZcnNUdW5HMkpLYjBFUUw1SQ=="
   ldap-toml: ""
 ---
 # Source: loki-stack/charts/loki/templates/secret.yaml
@@ -330,6 +330,9 @@ data:
     - /etc/config/rules
     - /etc/config/alerts
     scrape_configs:
+    - job_name: 'order-srv'
+      static_configs:
+      - targets: ['order-srv:3000']
     - job_name: prometheus
       static_configs:
       - targets:
@@ -678,49 +681,6 @@ data:
       isDefault: true
       jsonData:
         {}
----
-# Source: loki-stack/templates/tests/loki-test-configmap.yaml
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: loki-loki-stack-test
-  labels:
-    app: loki-stack
-    chart: loki-stack-2.10.2
-    release: loki
-    heritage: Helm
-data:
-  test.sh: |
-    #!/usr/bin/env bash
-
-    LOKI_URI="http://${LOKI_SERVICE}:${LOKI_PORT}"
-
-    function setup() {
-      apk add -u curl jq
-      until (curl -s ${LOKI_URI}/loki/api/v1/label/app/values | jq -e '.data[] | select(. == "loki")'); do
-        sleep 1
-      done
-    }
-
-    @test "Has labels" {
-      curl -s ${LOKI_URI}/loki/api/v1/labels | \
-      jq -e '.data[] | select(. == "app")'
-    }
-
-    @test "Query log entry" {
-      curl -sG ${LOKI_URI}/api/prom/query?limit=10 --data-urlencode 'query={app="loki"}' | \
-      jq -e '.streams[].entries | length >=1'
-    }
-
-    @test "Push log entry" {
-      local timestamp=$(date +%s000000000)
-      local data=$(jq -n --arg timestamp "${timestamp}" '{"streams": [{"stream": {"app": "loki-test"}, "values": [[$timestamp, "foobar"]]}]}')
-
-      curl -s -X POST -H "Content-Type: application/json" ${LOKI_URI}/loki/api/v1/push --data-raw "${data}"
-
-      curl -sG ${LOKI_URI}/loki/api/v1/query_range?limit=1 --data-urlencode 'query={app="loki-test"}' | \
-      jq -e '.data.result[].values[][1] == "foobar"'
-    }
 ---
 # Source: loki-stack/charts/prometheus/templates/pvc.yaml
 apiVersion: v1
@@ -1612,7 +1572,7 @@ spec:
         checksum/config: e747ef9deaa6d707df2bc2d083ceef3ec6bcd0fada6bc6a011dfc8a770be7031
         checksum/dashboards-json-config: 01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b
         checksum/sc-dashboard-provider-config: 01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b
-        checksum/secret: 7c097f2fb82087cbe0221b8d947c42924a834f7a93d08350f3c01e156dd26851
+        checksum/secret: 4ad501f376cdf722f8e6ab5eac72823a400fd3d7b414b73e60e44c7c79aa01e1
     spec:      
       serviceAccountName: loki-grafana
       automountServiceAccountToken: true
@@ -2244,36 +2204,3 @@ spec:
       command: ['wget']
       args: ['loki-alertmanager:9093']
   restartPolicy: Never
----
-# Source: loki-stack/templates/tests/loki-test-pod.yaml
-apiVersion: v1
-kind: Pod
-metadata:
-  annotations:
-    "helm.sh/hook": test-success
-  labels:
-    app: loki-stack
-    chart: loki-stack-2.10.2
-    release: loki
-    heritage: Helm
-  name: loki-loki-stack-test
-spec:
-  containers:
-  - name: test
-    image: "bats/bats:1.8.2"
-    imagePullPolicy: ""
-    args:
-    - /var/lib/loki/test.sh
-    env:
-    - name: LOKI_SERVICE
-      value: loki
-    - name: LOKI_PORT
-      value: "3100"
-    volumeMounts:
-    - name: tests
-      mountPath: /var/lib/loki
-  restartPolicy: Never
-  volumes:
-  - name: tests
-    configMap:
-      name: loki-loki-stack-test

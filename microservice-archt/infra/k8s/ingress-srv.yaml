@@ -23,3 +23,10 @@ spec:
                 name: payment-srv
                 port:
                   number: 3000
+          - path: /metrics
+            pathType: Prefix
+            backend:
+              service:
+                name: order-srv
+                port:
+                  number: 3000

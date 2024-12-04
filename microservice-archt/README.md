@@ -98,3 +98,35 @@ get password
 ```bash
 kubectl get secret loki-grafana -n my-grafana -o jsonpath="{.data.admin-password}" | base64 --decode
 ```
+
+## PROMETHEUS-GRAFANA
+
+service url
+```bash
+http://loki-prometheus-server:80  
+```
+
+add this annotation to the deployment service
+```yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: order-srv
+  annotations:
+    prometheus.io/scrape: 'true'
+    prometheus.io/port: '3000'
+    prometheus.io/path: '/metrics'
+spec:
+  selector:
+    app: order-depl
+  ports:
+    - name: order
+      protocol: TCP
+      port: 3000
+      targetPort: 3000
+```
+
+prom-query example 
+```bash
+sum by (status) (order_http_requests_total{route!="/metrics"})
+```
